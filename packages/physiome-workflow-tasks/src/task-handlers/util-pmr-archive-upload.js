@@ -12,6 +12,8 @@ const logger = require('workflow-utils/logger-with-prefix')('PhysiomeWorkflowTas
 
 
 async function uploadPMRArchiveToFigshare(articleId, submission) {
+    logger.warn('PMR upload should be manually done via the manual figshare collection upload field.');
+    return Promise.resolve();
 
     if(!submission.publishingPmrDetails) {
         logger.warn(`no PMR workspace details provided to publish model (submission=${submission.id}, articleId=${articleId})`);
