@@ -177,6 +177,10 @@ instance Submission {
             priceAcknowledged
         }
 
+        fields "owner-read" {
+            figshareFiles
+        }
+
         fields "read-only" {
             phase, manuscriptId, submitter, submissionDate, figshareArticleDoi,
             publishDate, figshareArticleId, revisionsNote
@@ -193,7 +197,7 @@ instance Submission {
 
             suitableForPhysiome, manuscriptFormatted, modelImplExecutable, reprodGoalAchieved, modelReproducible, modificationExplained, modelAppropriateStandards, paramSourceStated, provenanceClear, overlapPaperManuscriptCode, articleFitForPublication, modelAnnotated,
 
-            publishingPmrDetails, figshareFiles
+            publishingPmrDetails
         }
 
         tasks "owner-submit" {
@@ -208,11 +212,13 @@ instance Submission {
         allow <administrator> [access:all]
 
         allow <owner> [read] on "submit"
+        allow <owner> [read] on "owner-read"
         allow <owner> [read] on "read-only"
         allow <owner> [write] on "submit" where (phase == SubmissionPhase.Pending || phase == SubmissionPhase.Saved || phase == SubmissionPhase.Revision)
         allow <owner> [task] on "owner-submit"
         allow <owner> [destroy] where (phase == SubmissionPhase.Pending || phase == SubmissionPhase.Saved)
 
+        allow <administrator> [write, read] on "owner-read"
         allow <administrator> [write, read] on "submit"
         allow <administrator> [write, read] on "curation"
         allow <administrator> [write, read] on "payment-fields"
