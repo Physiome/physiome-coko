@@ -430,7 +430,7 @@ class WorkflowModel extends BaseModel {
         if(this.specificModelExtensions.modifyListingQuery) {
             this.specificModelExtensions.modifyListingQuery.forEach(ext => {
 
-                const newQuery = ext(query, this.modelClass, input, topLevelFields, eagerResolves);
+                const newQuery = ext(query, this, input, topLevelFields, eagerResolves);
                 if(newQuery) {
                     query = newQuery;
                 }
