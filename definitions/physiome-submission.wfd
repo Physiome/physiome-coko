@@ -286,7 +286,7 @@ instance Submission {
 
         { FundingEditor => funding, label:"Funding Acknowledgements" }
 
-        { FileUploader => articleFiles, label:"Manuscript", help:"Please submit the PDF manuscript or an Overleaf zip export file in this section, even if it is included in your workspace. A template for Physiome manuscripts can be found <a target='_blank' rel='noopener noreferrer' href='https://www.overleaf.com/5969134891vcddxjnnfzfh'>here</a>." }
+        { FileUploader => articleFiles, label:"Manuscript", help:"Please submit the PDF manuscript and the Overleaf source file in this section, even if it is included in your workspace. We recommend making use of <a target='_blank' rel='noopener noreferrer' href='https://www.overleaf.com/latex/templates/physiome-journal-article-template/kfbqwxxmtsfv'>the template for Physiome manuscripts</a> for the creation of the submission, and then follow <a target='_blank' rel='noopener noreferrer' href='https://www.overleaf.com/learn/how-to/Downloading_a_Project'>the instructions to download the Overleaf source file</a> for uploading the resulting source file to this upload field." }
 
         { Group, heading:"Model Files", children: {
 
