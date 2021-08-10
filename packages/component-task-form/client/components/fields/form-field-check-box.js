@@ -69,7 +69,7 @@ const HelpContent = styled.span`
 
 function FormFieldCheckbox({className, data, binding, description, formDefinition, formValidator, options = {}}) {
 
-    const [value, _, handleInputChange] = useFormValueBinding(data, binding, "", (v) => v || "");
+    const [value, _, handleInputChange] = useFormValueBinding(data, binding, "", (v) => v ? true : false);
     const [validationIssues, clearValidationIssues] = useFormValidation(description, formDefinition, formValidator);
     const [helpIsShown, setHelpIsShown] = useState(false);
 
