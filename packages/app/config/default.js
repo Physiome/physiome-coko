@@ -138,8 +138,10 @@ const values = {
         categories: process.env.PUBLISH_FIGSHARE_CATEGORIES || "4, 12, 135, 156",  /* Biochemistry, Cell Biology, Computational Biology, Systems Biology */
         defaultTag: process.env.PUBLISH_FIGSHARE_DEFAULT_TAG || "Physiome Journal",
         customFieldNames: {
-            CommissionKind: process.env.PUBLISH_FIGSHARE_COMMISSION_KIND_NAME || 'Commission Kind'
+            CommissionKind: process.env.PUBLISH_FIGSHARE_COMMISSION_KIND_NAME || 'Commission Kind',
+            ISSN: process.env.PUBLISH_FIGSHARE_ISSN_NAME || 'ISSN'
         },
+        defaultISSN: process.env.PUBLISH_FIGSHARE_ISSN || "2774-6204",
 
         skipPublishingStage: (process.env.PUBLISH_FIGSHARE_SKIP_STAGE && (process.env.PUBLISH_FIGSHARE_SKIP_STAGE === "true" || process.env.PUBLISH_FIGSHARE_SKIP_STAGE === true))
     },

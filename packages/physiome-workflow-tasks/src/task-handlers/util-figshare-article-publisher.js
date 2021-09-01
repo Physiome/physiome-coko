@@ -102,6 +102,9 @@ class FigshareArticlePublisher {
                     if(ArticleCustomFieldNames.CommissionKind) {
                         articleData.custom_fields[ArticleCustomFieldNames.CommissionKind] = ["" + storedValueMapping[submission.iupsCommission]];
                     }
+                    if(ArticleCustomFieldNames.ISSN) {
+                        articleData.custom_fields[ArticleCustomFieldNames.ISSN] = PublishFigshareOptions.defaultISSN;
+                    }
                 }
             }
         }
