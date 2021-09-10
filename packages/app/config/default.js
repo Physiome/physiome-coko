@@ -83,6 +83,7 @@ const values = {
 
     'workflow-send-email' : {
         from: process.env.EMAIL_SEND_FROM,
+        cc_sender: (process.env.EMAIL_CC_SENDER && process.env.EMAIL_CC_SENDER.toString() !== "false"),
         prefix: process.env.EMAIL_SUBJECT_PREFIX,
         templateDirectory: `${__dirname}/../../../definitions/email-templates`,
         signature: process.env.EMAIL_SIGNATURE ? process.env.EMAIL_SIGNATURE.replace(/\\n/g, "\n") : "",

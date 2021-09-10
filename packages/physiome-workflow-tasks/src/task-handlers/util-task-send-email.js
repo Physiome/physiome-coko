@@ -71,6 +71,11 @@ class TaskSendEmail {
             text
         };
 
+        const emailDefaults = config.get('workflow-send-email');
+        if(emailDefaults.cc_sender) {
+            opts.cc = emailDefaults.from;
+        }
+
         return ServiceSendEmail.sendEmail(opts);
     }
 
