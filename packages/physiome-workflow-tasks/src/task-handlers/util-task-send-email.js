@@ -72,7 +72,8 @@ class TaskSendEmail {
         };
 
         const emailDefaults = config.get('workflow-send-email');
-        if(emailDefaults.cc_sender) {
+        const fromAddress = emailDefaults.from.trim().match(/^.+\<(.*)\>$/);
+        if(emailDefaults.cc_sender && (fromAddress === null || recipientEmail !== fromAddress[1])) {
             opts.cc = emailDefaults.from;
         }
 
