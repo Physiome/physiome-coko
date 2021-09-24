@@ -142,7 +142,7 @@ const values = {
             CommissionKind: process.env.PUBLISH_FIGSHARE_COMMISSION_KIND_NAME || 'Commission Kind',
             ISSN: process.env.PUBLISH_FIGSHARE_ISSN_NAME || 'ISSN'
         },
-        defaultISSN: process.env.PUBLISH_FIGSHARE_ISSN || "2774-6204",
+        defaultISSN: process.env.PUBLISH_FIGSHARE_ISSN || "2744-6204",
 
         skipPublishingStage: (process.env.PUBLISH_FIGSHARE_SKIP_STAGE && (process.env.PUBLISH_FIGSHARE_SKIP_STAGE === "true" || process.env.PUBLISH_FIGSHARE_SKIP_STAGE === true))
     },
