@@ -10,6 +10,7 @@
     "concurrently": "^4.1.0",
     "config": "^2.0.1",
     "eslint": "^5.12.1",
+    "pubsweet-server": "^13.4.1",
     "eslint-config-pubsweet": "^0.0.6",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jest": "^22.1.3",
@@ -36,7 +37,7 @@
     "test": "lerna run test",
     "dsl-compile": "pegjs -o dsl/wfd-dsl.js dsl/wfd-dsl.pegjs",
     "desc": "node dsl/compile.js definitions/physiome-submission.wfd packages/app/config/description.json",
-    "build" : "cd packages/app && NODE_ENV=production npx pubsweet build"
+    "build": "cd packages/app && NODE_ENV=production npx pubsweet build"
   },
   "engines": {
     "node": ">=8",
