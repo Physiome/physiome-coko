@@ -11,8 +11,9 @@ const EmailSignature = config.get('workflow-send-email.signature');
 class TaskSendEmail {
 
     constructor(emailTemplateName, logger) {
-
-        this.emailTemplate = new EmailTemplate(emailTemplateName);
+        if (emailTemplateName) {
+            this.emailTemplate = new EmailTemplate(emailTemplateName);
+        }
         this.logger = logger;
     }
 
@@ -40,9 +41,18 @@ class TaskSendEmail {
         return submission.submitter;
     }
 
+    baseTemplateData(submission) {
+        const link = `${BaseUrl}/details/${encodeURI(submission.id)}`;
+        return {
+            submission,
+            datetime: new Date().toISOString().slice(0, 10),
+            link,
+            signature: EmailSignature
+        }
+    }
+
     async submissionToEmailData(submission) {
 
-        const link = `${BaseUrl}/details/${encodeURI(submission.id)}`;
         const subject = await this.formatEmailSubject(submission);
         const recipient = await this.submissionToRecipient(submission);
 
@@ -51,18 +61,16 @@ class TaskSendEmail {
             recipientName: recipient.displayName,
             recipientEmail: recipient.email,
             data: {
-                datetime: new Date().toISOString().slice(0, 10),
-                submission,
                 user: recipient,
-                link,
-                signature:EmailSignature
+                ...this.baseTemplateData(submission)
             }
         };
     }
 
-    sendEmail(subject, recipientName, recipientEmail, data, submission) {
-
-        const text = this.emailTemplate.template(data);
+    _sendEmail(emailDatum, submission) {
+        const {subject, recipientName, recipientEmail, data} = emailDatum;
+        // XXX this fails if neiter text or template and data was provided
+        const text = emailDatum.text || this.emailTemplate.template(data);
         const to = `${recipientName} <${recipientEmail}>`;
 
         const opts = {
@@ -78,6 +86,20 @@ class TaskSendEmail {
         }
 
         return ServiceSendEmail.sendEmail(opts);
+    }
+
+    sendEmail(emailData, submission) {
+        const self = this;
+        const logger = self.logger;
+        if (!(emailData instanceof Array)) {
+            emailData = [emailData];
+        }
+        return Promise.all(emailData.map(emailDatum => {
+            self._sendEmail(emailDatum).catch(error => {
+                logger.error(`sendEmail error: ${error}`);
+                return error
+            });
+        }));
     }
 
     async processTask(task, taskService) {
@@ -102,15 +124,17 @@ class TaskSendEmail {
             return;
         }
 
-        const {subject, recipientName, recipientEmail, data} = await this.submissionToEmailData(submission);
+        const emailData = await this.submissionToEmailData(submission);
 
-        return this.sendEmail(subject, recipientName, recipientEmail, data, submission).then(result => {
-
+        return this.sendEmail(emailData, submission).then(result => {
+            // what if there is no emailData? the following would be wrong...
+            // if (values.filter(v => !(v instanceof Error)).length == 0) {
+            //     throw new Error('failed to send a email');
+            // }
             logger.debug(`process task has successfully finished, completing external task`);
             return taskService.complete(task);
 
         }).catch(err => {
-
             logger.error(`process task has failed due to: ${err.toString()}`);
         });
     }
