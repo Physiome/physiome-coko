@@ -1,5 +1,6 @@
 const WorkflowModel = require('component-workflow-model/model');
 const { Submission } = WorkflowModel.models;
+const { Identity } = require('component-workflow-model/shared-model/identity');
 
 const { resolveUserForContext } = require('component-workflow-model/shared-helpers/access');
 const { AuthorizationError, NotFoundError } = require('@pubsweet/errors');
@@ -9,17 +10,24 @@ const AclRule = require('client-workflow-model/AclRule');
 const AclActions = AclRule.Actions;
 
 const logger = require('workflow-utils/logger-with-prefix')('physiome-ui/server');
+const config = require('config');
+const AdminORCIDIdentities = config.get('identity.adminIdentities');
 
 
 module.exports = {
 
     Mutation: {
 
-        claimSubmission: async (instance, { id:submissionId }, context, info) => {
+        claimSubmission: async (instance, { id:submissionId, adminId:adminId }, context, info) => {
 
             if(!submissionId) {
                 return false;
             }
+
+            let query = Identity.query();
+            const result = await query.select(
+                ['id', 'identityId', 'displayName']
+            ).whereIn('identityId', AdminORCIDIdentities);
 
             const [submission, user] = await Promise.all([
                 Submission.find(submissionId),
@@ -48,7 +56,10 @@ module.exports = {
                 return new AuthorizationError(`Modification of submission curator not allowed.`);
             }
 
-            submission.curatorId = user.id;
+            if(!adminId) {
+                adminId = user.id;
+            }
+            submission.curatorId = adminId;
             await submission.save();
             await submission.publishWasModified();
 
@@ -186,5 +197,28 @@ module.exports = {
                 return pubSub.asyncIterator(`Submission.published`);
             }
         }
+    },
+
+    Query: {
+        getAdminIdentities: async (instance, vars, context, info) => {
+            const user = await resolveUserForContext(context);
+            if(!user) {
+                return new Error(`Logged in user required to query for admins`);
+            }
+            const isAdmin = (user.finalisedAccessGroups || []).indexOf('administrator') !== -1;
+            if(!isAdmin) {
+                return new AuthorizationError(`Only admin users may query for admins`);
+            }
+
+            let query = Identity.query();
+            const result = await query.select(['id', 'displayName']).whereIn('identityId', AdminORCIDIdentities);
+            return result.map((r) => {
+                return {
+                    identityId: r.id,
+                    displayName: r.displayName,
+                }
+            });
+        }
     }
+
 };

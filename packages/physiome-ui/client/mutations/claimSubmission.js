@@ -6,18 +6,18 @@ export default (instanceType, opts = {}) => {
 
     const claimSubmissionMutation = useMemo(() => {
         return gql`
-            mutation ClaimSubmission($id:ID) {
-                result: claim${instanceType.name}(id:$id)
+            mutation ClaimSubmission($id:ID, $adminId:ID) {
+                result: claim${instanceType.name}(id:$id, adminId:$adminId)
             }
         `;
     }, [instanceType]);
 
     const mutation = useMutation(claimSubmissionMutation, opts);
 
-    return function wrappedClaimSubmissionMutation(id) {
+    return function wrappedClaimSubmissionMutation(id, adminId) {
 
         const combinedOpts = Object.assign({}, opts);
-        combinedOpts.variables = { id };
+        combinedOpts.variables = { id, adminId };
 
         return mutation(combinedOpts).then(result => {
             return (result && result.data) ? result.data.result : null;

@@ -1,6 +1,11 @@
+type AdminDetails {
+    identityId: ID!
+    displayName: String
+}
+
 extend type Mutation {
 
-    claimSubmission(id:ID) : Boolean
+    claimSubmission(id:ID, adminId:ID) : Boolean
     unclaimSubmission(id:ID) : Boolean
 
     republishSubmission(id:ID) : Boolean
@@ -11,4 +16,8 @@ extend type Mutation {
 extend type Subscription {
 
     publishedSubmission : ID!
+}
+
+extend type Query {
+    getAdminIdentities : [AdminDetails!]
 }
