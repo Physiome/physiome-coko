@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_07a0cqa" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.9.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_07a0cqa" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.12.0">
   <bpmn:collaboration id="Collaboration_15ux3tb">
     <bpmn:participant id="Participant_18r8mdg" processRef="physiome-submission" />
   </bpmn:collaboration>
@@ -8,16 +8,16 @@
       <bpmn:lane id="Lane_Administrator" name="Administrator">
         <bpmn:flowNodeRef>UserTask_FinalDecision</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>ExclusiveGateway_ChecksPerformed</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>UserTask_PerformChecks</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Task_FinalApproval</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>ExclusiveGateway_00200ef</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>StartEvent_RepublishArticle</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>UserTask_PerformChecks</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>StartEvent_ResumeRejected</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>StartEvent_AssignCurator</bpmn:flowNodeRef>
       </bpmn:lane>
       <bpmn:lane id="Lane_System" name="System&#10;">
         <bpmn:flowNodeRef>ServiceTask_RejectionEmail</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>ExclusiveGateway_0nz1ao5</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>ServiceTask_InitialSubmissionEmail</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Task_1k578yp</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>EndEvent_1g7oqr9</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>ExclusiveGateway_0nl51hw</bpmn:flowNodeRef>
@@ -40,6 +40,9 @@
         <bpmn:flowNodeRef>ExclusiveGateway_1h2khg5</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>ServiceTask_RevisionSubmittedEmail</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Gateway_1fqqq4a</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_1j6txd5</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ServiceTask_InitialSubmissionEmail</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_1x6t87a</bpmn:flowNodeRef>
       </bpmn:lane>
       <bpmn:lane id="Lane_Submitter" name="Submitter">
         <bpmn:flowNodeRef>ExclusiveGateway_1mariet</bpmn:flowNodeRef>
@@ -53,6 +56,7 @@
         <bpmn:flowNodeRef>Task_DetailsSubmission</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>BoundaryEvent_TimeoutSubmission</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>StartEvent_1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_1nlx0oe</bpmn:flowNodeRef>
         <bpmn:childLaneSet id="LaneSet_1frl56d" />
       </bpmn:lane>
     </bpmn:laneSet>
@@ -69,9 +73,6 @@
       <bpmn:outgoing>SequenceFlow_0kbps3o</bpmn:outgoing>
       <bpmn:outgoing>SequenceFlow_1u6nr9s</bpmn:outgoing>
     </bpmn:parallelGateway>
-    <bpmn:serviceTask id="ServiceTask_InitialSubmissionEmail" name="Initial Submission Email" camunda:type="external" camunda:topic="initial-submission-email">
-      <bpmn:incoming>SequenceFlow_1u6nr9s</bpmn:incoming>
-    </bpmn:serviceTask>
     <bpmn:exclusiveGateway id="ExclusiveGateway_1mariet">
       <bpmn:incoming>SequenceFlow_0fu2r71</bpmn:incoming>
       <bpmn:incoming>SequenceFlow_18cn6am</bpmn:incoming>
@@ -119,13 +120,6 @@
       <bpmn:outgoing>SequenceFlow_1doyzzb</bpmn:outgoing>
       <bpmn:outgoing>SequenceFlow_1gwty42</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:userTask id="UserTask_PerformChecks" name="Perform Quality Checking" camunda:formKey="custom:checks">
-      <bpmn:incoming>SequenceFlow_0kbps3o</bpmn:incoming>
-      <bpmn:incoming>SequenceFlow_0fu3pzl</bpmn:incoming>
-      <bpmn:incoming>SequenceFlow_0fvffdb</bpmn:incoming>
-      <bpmn:incoming>Flow_0tfqpse</bpmn:incoming>
-      <bpmn:outgoing>SequenceFlow_1ty0sb5</bpmn:outgoing>
-    </bpmn:userTask>
     <bpmn:inclusiveGateway id="InclusiveGateway_1vw9f3m" name="Wait for &#34;Reserve DOI&#34; and Final Approval before Publishing Article">
       <bpmn:incoming>SequenceFlow_0pb2ui1</bpmn:incoming>
       <bpmn:incoming>SequenceFlow_14lcybd</bpmn:incoming>
@@ -167,7 +161,7 @@
     <bpmn:endEvent id="EndEvent_RepublishedArticle" name="Republished">
       <bpmn:incoming>SequenceFlow_0danq81</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:startEvent id="StartEvent_RepublishArticle" name="Re-publish Article&#10;">
+    <bpmn:startEvent id="StartEvent_RepublishArticle" name="Re-publish Article">
       <bpmn:outgoing>SequenceFlow_08jkoiw</bpmn:outgoing>
       <bpmn:messageEventDefinition messageRef="Message_0w6n63g" />
     </bpmn:startEvent>
@@ -191,10 +185,6 @@
       <bpmn:outgoing>SequenceFlow_07c8h5s</bpmn:outgoing>
       <bpmn:outgoing>SequenceFlow_0esz997</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:startEvent id="StartEvent_ResumeRejected" name="Resume Rejected Submission">
-      <bpmn:outgoing>SequenceFlow_0fu3pzl</bpmn:outgoing>
-      <bpmn:messageEventDefinition messageRef="Message_1frtnpl" />
-    </bpmn:startEvent>
     <bpmn:serviceTask id="ServiceTask_RevisionsNeededEmail" name="Revisions Needed Email" camunda:type="external" camunda:topic="revisions-needed-email">
       <bpmn:incoming>SequenceFlow_195aloh</bpmn:incoming>
     </bpmn:serviceTask>
@@ -334,9 +324,41 @@
       <bpmn:outgoing>Flow_0tfqpse</bpmn:outgoing>
       <bpmn:outgoing>Flow_0ca1buh</bpmn:outgoing>
     </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_1eq5frr" sourceRef="Event_1nlx0oe" targetRef="Activity_1j6txd5" />
+    <bpmn:startEvent id="Event_1nlx0oe" name="Comment">
+      <bpmn:outgoing>Flow_1eq5frr</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_04om0bk" messageRef="Message_1i0a3xt" />
+    </bpmn:startEvent>
+    <bpmn:serviceTask id="Activity_1j6txd5" name="Comment Submitted" camunda:type="external" camunda:topic="comment-submitted">
+      <bpmn:incoming>Flow_1eq5frr</bpmn:incoming>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="ServiceTask_InitialSubmissionEmail" name="Initial Submission Email" camunda:type="external" camunda:topic="initial-submission-email">
+      <bpmn:incoming>SequenceFlow_1u6nr9s</bpmn:incoming>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="UserTask_PerformChecks" name="Perform Quality Checking" camunda:formKey="custom:checks">
+      <bpmn:incoming>SequenceFlow_0kbps3o</bpmn:incoming>
+      <bpmn:incoming>SequenceFlow_0fu3pzl</bpmn:incoming>
+      <bpmn:incoming>SequenceFlow_0fvffdb</bpmn:incoming>
+      <bpmn:incoming>Flow_0tfqpse</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1ty0sb5</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:startEvent id="StartEvent_ResumeRejected" name="Resume Rejected Submission">
+      <bpmn:outgoing>SequenceFlow_0fu3pzl</bpmn:outgoing>
+      <bpmn:messageEventDefinition messageRef="Message_1frtnpl" />
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_16m4gsx" sourceRef="StartEvent_AssignCurator" targetRef="Activity_1x6t87a" />
+    <bpmn:serviceTask id="Activity_1x6t87a" name="Assign Curator Email" camunda:type="external" camunda:topic="assign-curator-email">
+      <bpmn:incoming>Flow_16m4gsx</bpmn:incoming>
+    </bpmn:serviceTask>
+    <bpmn:startEvent id="StartEvent_AssignCurator" name="Assign Curator">
+      <bpmn:outgoing>Flow_16m4gsx</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_115p8ux" messageRef="Message_19qaqgt" />
+    </bpmn:startEvent>
   </bpmn:process>
   <bpmn:message id="Message_1frtnpl" name="resume-rejected-submission" />
   <bpmn:message id="Message_0w6n63g" name="republish-article" />
+  <bpmn:message id="Message_1i0a3xt" name="comment" />
+  <bpmn:message id="Message_19qaqgt" name="assign-curator" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_15ux3tb">
       <bpmndi:BPMNShape id="Participant_18r8mdg_di" bpmnElement="Participant_18r8mdg" isHorizontal="true">
@@ -351,6 +373,10 @@
       <bpmndi:BPMNShape id="Lane_01lfdfi_di" bpmnElement="Lane_Administrator" isHorizontal="true">
         <dc:Bounds x="160" y="740" width="3030" height="390" />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1eq5frr_di" bpmnElement="Flow_1eq5frr">
+        <di:waypoint x="3020" y="278" />
+        <di:waypoint x="3020" y="453" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0ca1buh_di" bpmnElement="Flow_0ca1buh">
         <di:waypoint x="575" y="570" />
         <di:waypoint x="470" y="570" />
@@ -358,8 +384,8 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0tfqpse_di" bpmnElement="Flow_0tfqpse">
         <di:waypoint x="600" y="595" />
-        <di:waypoint x="600" y="840" />
-        <di:waypoint x="844" y="840" />
+        <di:waypoint x="600" y="887" />
+        <di:waypoint x="844" y="887" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0lnu7yh_di" bpmnElement="Flow_0lnu7yh">
         <di:waypoint x="1930" y="493" />
@@ -464,7 +490,9 @@
         <di:waypoint x="1074" y="533" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="SequenceFlow_1ty0sb5_di" bpmnElement="SequenceFlow_1ty0sb5">
-        <di:waypoint x="944" y="863" />
+        <di:waypoint x="944" y="910" />
+        <di:waypoint x="997" y="910" />
+        <di:waypoint x="997" y="863" />
         <di:waypoint x="1049" y="863" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="SequenceFlow_0jju3ab_di" bpmnElement="SequenceFlow_0jju3ab">
@@ -485,20 +513,20 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="SequenceFlow_0kbps3o_di" bpmnElement="SequenceFlow_0kbps3o">
         <di:waypoint x="894" y="622" />
-        <di:waypoint x="894" y="823" />
+        <di:waypoint x="894" y="870" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="SequenceFlow_0fu3pzl_di" bpmnElement="SequenceFlow_0fu3pzl">
-        <di:waypoint x="728" y="910" />
+        <di:waypoint x="728" y="930" />
+        <di:waypoint x="786" y="930" />
         <di:waypoint x="786" y="910" />
-        <di:waypoint x="786" y="863" />
-        <di:waypoint x="844" y="863" />
+        <di:waypoint x="844" y="910" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="SequenceFlow_0fvffdb_di" bpmnElement="SequenceFlow_0fvffdb">
         <di:waypoint x="1301" y="597" />
         <di:waypoint x="1150" y="597" />
-        <di:waypoint x="932" y="823" />
+        <di:waypoint x="926" y="870" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="1166" y="603" width="90" height="14" />
+          <dc:Bounds x="1188" y="603" width="46" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="SequenceFlow_0trwovd_di" bpmnElement="SequenceFlow_0trwovd">
@@ -642,14 +670,15 @@
           <dc:Bounds x="2409" y="620" width="48" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_16m4gsx_di" bpmnElement="Flow_16m4gsx">
+        <di:waypoint x="810" y="752" />
+        <di:waypoint x="810" y="720" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="ServiceTask_0fjqg25_di" bpmnElement="ServiceTask_RejectionEmail">
         <dc:Bounds x="1722" y="570" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="ParallelGateway_15rqoh0_di" bpmnElement="ExclusiveGateway_0nz1ao5">
         <dc:Bounds x="869" y="572" width="50" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="ServiceTask_114zkzt_di" bpmnElement="ServiceTask_InitialSubmissionEmail">
-        <dc:Bounds x="1024" y="453" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="ExclusiveGateway_1mariet_di" bpmnElement="ExclusiveGateway_1mariet" isMarkerVisible="true">
         <dc:Bounds x="869" y="327" width="50" height="50" />
@@ -683,9 +712,6 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="ExclusiveGateway_0qink7d_di" bpmnElement="ExclusiveGateway_ChecksPerformed" isMarkerVisible="true">
         <dc:Bounds x="1049" y="838" width="50" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="UserTask_0tbn6l6_di" bpmnElement="UserTask_PerformChecks">
-        <dc:Bounds x="844" y="823" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="InclusiveGateway_0m67ner_di" bpmnElement="InclusiveGateway_1vw9f3m">
         <dc:Bounds x="2180" y="613" width="50" height="50" />
@@ -723,7 +749,7 @@
       <bpmndi:BPMNShape id="StartEvent_1tbzcov_di" bpmnElement="StartEvent_RepublishArticle">
         <dc:Bounds x="3072" y="845" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="3049" y="888" width="87" height="27" />
+          <dc:Bounds x="3049" y="888" width="87" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="ServiceTask_0vjjnz4_di" bpmnElement="ServiceTask_RepublishArticle">
@@ -743,12 +769,6 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="ExclusiveGateway_0fqgwma_di" bpmnElement="ExclusiveGateway_0fqgwma" isMarkerVisible="true">
         <dc:Bounds x="2285" y="613" width="50" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="StartEvent_1kvqg7r_di" bpmnElement="StartEvent_ResumeRejected">
-        <dc:Bounds x="692" y="892" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="666" y="935" width="88" height="27" />
-        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="ServiceTask_05w6hw7_di" bpmnElement="ServiceTask_RevisionsNeededEmail">
         <dc:Bounds x="290" y="540" width="100" height="80" />
@@ -791,6 +811,36 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_0avoxvd_di" bpmnElement="Gateway_1fqqq4a">
         <dc:Bounds x="575" y="545" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1fyeaw8_di" bpmnElement="Event_1nlx0oe">
+        <dc:Bounds x="3002" y="242" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2996" y="218" width="48" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0wxgb2u_di" bpmnElement="Activity_1j6txd5">
+        <dc:Bounds x="2970" y="453" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_18rpqjo_di" bpmnElement="ServiceTask_InitialSubmissionEmail">
+        <dc:Bounds x="1024" y="453" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="UserTask_0tbn6l6_di" bpmnElement="UserTask_PerformChecks">
+        <dc:Bounds x="844" y="870" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_1kvqg7r_di" bpmnElement="StartEvent_ResumeRejected">
+        <dc:Bounds x="692" y="912" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="667" y="955" width="87" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1kgauww_di" bpmnElement="Activity_1x6t87a">
+        <dc:Bounds x="760" y="640" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0mvh3ui_di" bpmnElement="StartEvent_AssignCurator">
+        <dc:Bounds x="792" y="752" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="774" y="795" width="72" height="14" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BoundaryEvent_1mksq54_di" bpmnElement="BoundaryEvent_TimeoutSubmission">
         <dc:Bounds x="702" y="374" width="36" height="36" />
