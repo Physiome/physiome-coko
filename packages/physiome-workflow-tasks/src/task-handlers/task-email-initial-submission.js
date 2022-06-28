@@ -1,3 +1,4 @@
+const { EmailTemplate } = require('component-workflow-send-email');
 const TaskSendEmail = require('./util-task-send-email');
 const logger = require('workflow-utils/logger-with-prefix')('PhysiomeWorkflowTasks/Email-InitialSubmission');
 const config = require('config');
@@ -6,46 +7,57 @@ const EditorsMailingListAddress = config.get('workflow-send-email.editorsMailing
 class TaskSendInitialSubmissionEmail extends TaskSendEmail {
 
     constructor(logger) {
-        super('manuscript-initial-submission-author', logger);
+        super(null, logger);
+        this.toSubmitterTemplate = new EmailTemplate('manuscript-initial-submission-author');
+        this.toEditorListTemplate = new EmailTemplate('manuscript-submitted-editor-list');
     }
 
-    async formatEmailSubject(submission) {
-        return `submission ${submission.manuscriptId}`;
-    }
-}
-
-class TaskSendInitialSubmissionListEmail extends TaskSendEmail {
-
-    constructor(logger) {
-        super('manuscript-submitted-editor-list', logger);
-    }
-
-    async formatEmailSubject(submission) {
-        return `submission ${submission.manuscriptId} ready for review`;
-    }
-
-    async submissionToRecipient(submission) {
+    toSubmitter(submission) {
+        const subject = `submission ${submission.manuscriptId}`;
+        const recipient = submission.submitter;
+        const text = this.toSubmitterTemplate.template({
+            user: recipient,
+            ...this.baseTemplateData(submission)
+        });
         return {
-            displayName: 'Physiome Editors',
-            email: EditorsMailingListAddress
+            subject,
+            recipientName: recipient.displayName,
+            recipientEmail: recipient.email,
+            text: text,
         };
     }
 
-    skipTaskWithoutSendingEmail() {
-        return !EditorsMailingListAddress;
+    toEditorMailingList(submission) {
+        const subject = `NEW submission ${submission.manuscriptId} ready for review`;
+        const recipient = {
+            displayName: 'Physiome Editors',
+            email: EditorsMailingListAddress
+        };
+        const text = this.toEditorListTemplate.template({
+            user: recipient,
+            ...this.baseTemplateData(submission)
+        });
+        return {
+            subject,
+            recipientName: recipient.displayName,
+            recipientEmail: recipient.email,
+            text: text,
+        };
     }
+
+    async submissionToEmailData(submission) {
+        const result = [];
+        result.push(this.toSubmitter(submission));
+        if (!!EditorsMailingListAddress) {
+            result.push(this.toEditorMailingList(submission));
+        }
+        return result;
+    }
+
 }
 
 module.exports = function _setupEmailInitialSubmissionTask(client) {
-
     const externalTaskName = 'initial-submission-email';
-    const emailtask1 = new TaskSendInitialSubmissionEmail(logger);
-    const emailtask2 = new TaskSendInitialSubmissionListEmail(logger);
-
-    client.subscribe(externalTaskName, async ({ task, taskService }) => {
-        return Promise.all([
-            emailtask1.processTask(task, taskService),
-            emailtask2.processTask(task, taskService)
-        ]);
-    });
+    const task = new TaskSendInitialSubmissionEmail(logger);
+    task.configure(client, externalTaskName);
 };
