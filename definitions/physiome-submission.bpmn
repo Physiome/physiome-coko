@@ -42,7 +42,7 @@
         <bpmn:flowNodeRef>Gateway_1fqqq4a</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_1j6txd5</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>ServiceTask_InitialSubmissionEmail</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Activity_1x6t87a</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ServiceTask_AssignCuratorEmail</bpmn:flowNodeRef>
       </bpmn:lane>
       <bpmn:lane id="Lane_Submitter" name="Submitter">
         <bpmn:flowNodeRef>ExclusiveGateway_1mariet</bpmn:flowNodeRef>
@@ -346,8 +346,8 @@
       <bpmn:outgoing>SequenceFlow_0fu3pzl</bpmn:outgoing>
       <bpmn:messageEventDefinition messageRef="Message_1frtnpl" />
     </bpmn:startEvent>
-    <bpmn:sequenceFlow id="Flow_16m4gsx" sourceRef="StartEvent_AssignCurator" targetRef="Activity_1x6t87a" />
-    <bpmn:serviceTask id="Activity_1x6t87a" name="Assign Curator Email" camunda:type="external" camunda:topic="assign-curator-email">
+    <bpmn:sequenceFlow id="Flow_16m4gsx" sourceRef="StartEvent_AssignCurator" targetRef="ServiceTask_AssignCuratorEmail" />
+    <bpmn:serviceTask id="ServiceTask_AssignCuratorEmail" name="Assign Curator Email" camunda:type="external" camunda:topic="assign-curator-email">
       <bpmn:incoming>Flow_16m4gsx</bpmn:incoming>
     </bpmn:serviceTask>
     <bpmn:startEvent id="StartEvent_AssignCurator" name="Assign Curator">
@@ -833,7 +833,7 @@
           <dc:Bounds x="667" y="955" width="87" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1kgauww_di" bpmnElement="Activity_1x6t87a">
+      <bpmndi:BPMNShape id="Activity_1kgauww_di" bpmnElement="ServiceTask_AssignCuratorEmail">
         <dc:Bounds x="760" y="640" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0mvh3ui_di" bpmnElement="StartEvent_AssignCurator">

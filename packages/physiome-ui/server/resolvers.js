@@ -62,6 +62,9 @@ module.exports = {
             submission.curatorId = adminId;
             await submission.save();
             await submission.publishWasModified();
+            if (adminId != user.id) {
+                await submission.restartWorkflow("StartEvent_AssignCurator");
+            }
 
             return true;
         },
