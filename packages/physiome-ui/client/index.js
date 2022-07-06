@@ -6,6 +6,7 @@ import FormFieldResumeRejectedSubmission from './form-fields/form-field-resume-r
 import FormFieldRepublishSubmission from './form-fields/form-field-republish-submission';
 import FormFieldRequestPaymentBanner from './form-fields/form-field-request-payment-banner';
 import FormFieldPMRWorkspaceDetails from './form-fields/form-field-pmr-workspace-details';
+import FormFieldCommentSpace from './form-fields/form-field-comment-space';
 
 registerFormFieldType('SubmissionStatusPill', FormFieldSubmissionStatus);
 registerFormFieldType('ClaimSubmission', FormFieldClaimSubmission);
@@ -13,6 +14,7 @@ registerFormFieldType('ResumeRejectedSubmission', FormFieldResumeRejectedSubmiss
 registerFormFieldType('RepublishSubmission', FormFieldRepublishSubmission);
 registerFormFieldType('RequestPaymentBanner', FormFieldRequestPaymentBanner);
 registerFormFieldType('PMRWorkspaceDetails', FormFieldPMRWorkspaceDetails);
+registerFormFieldType('CommentSpace', FormFieldCommentSpace);
 
 
 import PageDashboardActiveSubmissions from './pages/dashboard-active-submissions';

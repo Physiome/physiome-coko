@@ -1,5 +1,6 @@
 const ModelFile = require('./file');
 const ModelIdentity = require('./identity');
+const ModelComment = require('./comment');
 
 const fs = require('fs');
 const path = require('path');
@@ -16,13 +17,15 @@ module.exports = function loaderSupport() {
 
         resolvers: [
             ModelFile.resolvers,
-            ModelIdentity.resolvers
+            ModelIdentity.resolvers,
+            ModelComment.resolvers
         ],
 
         models: {
             File: ModelFile.model,
             ExtendedFile: ModelFile.model,
-            Identity: ModelIdentity.model
+            Identity: ModelIdentity.model,
+            Comment: ModelComment.model,
         },
 
         typeDefs

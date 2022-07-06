@@ -82,9 +82,22 @@ input ConfirmFileUploadInput {
     fileByteSize: Int
 }
 
+type Comment {
+    id: ID!
+    created: DateTime!
+    updated: DateTime
+    author: Identity
+    comment_body: String
+}
+
+input CommentInput {
+    comment_body: String
+}
+
 extend type Mutation {
     createFileUploadSignedUrl(input:CreateFileUploadSignedUrlInput): FileUploadSignedUrlResult
     confirmFileUpload(input:ConfirmFileUploadInput) : File
+    commentOnSubmission(input:CommentInput): Comment
 }
 
 

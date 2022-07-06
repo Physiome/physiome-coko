@@ -152,6 +152,8 @@ instance Submission {
         paymentSkipped: Boolean <state, input:exclude, default:false>,
         curationNotes: String,
 
+        comments: [Comment] <set>,
+
         articleFiles: [File] <set>,
         supplementaryFiles: [File] <set, file-labels, file-types>,
 
@@ -173,6 +175,7 @@ instance Submission {
     	    kind, title, abstract, primaryPapers, authors, funding,
     	    keywords, iupsCommission,
     	    modelSource, modelPmrWorkspaceUri, modelRepositoryUri, modelFiles,
+            comments,
     	    articleFiles, supplementaryFiles,
             priceAcknowledged
         }
@@ -402,6 +405,8 @@ instance Submission {
                 { StaticText => manuscriptId, label:"Manuscript ID" }
 
                 { SubmissionStatusPill => phase, label:"Submission Status" }
+
+                { CommentSpace => comments, label: "Correspondence" }
 
                 { ClaimSubmission => curator, <administrator>, label:"Assigned Curator" }
 
