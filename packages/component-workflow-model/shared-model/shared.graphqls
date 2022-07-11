@@ -83,14 +83,15 @@ input ConfirmFileUploadInput {
 }
 
 type Comment {
-    id: ID!
+    id: Int!
     created: DateTime!
     updated: DateTime
     author: Identity
-    comment_body: String
+    commentBody: String  # magic requires this to be commentBody instead of comment_body like in the db
 }
 
 input CommentInput {
+    submission_id: ID!
     comment_body: String
 }
 

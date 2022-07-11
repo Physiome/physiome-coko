@@ -152,7 +152,7 @@ instance Submission {
         paymentSkipped: Boolean <state, input:exclude, default:false>,
         curationNotes: String,
 
-        comments: [Comment] <set>,
+        comments: [Comment],
 
         articleFiles: [File] <set>,
         supplementaryFiles: [File] <set, file-labels, file-types>,
