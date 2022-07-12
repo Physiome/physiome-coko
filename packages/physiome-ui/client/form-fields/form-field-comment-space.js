@@ -64,70 +64,12 @@ function FormFieldCommentSpace({data, binding, instanceId, instanceType, saveDat
         });
     };
 
-    const ConfirmationContent = styled.div`
-      min-width: 60em;
-      max-width: 80em;
-    `;
-    const ConfirmationHeading = styled.div`
-      margin-bottom: 15px;
-      font-family: ${th('modal.fontFamily')};
-      font-size: ${th('modal.headingFontSize')};
-      font-weight: ${th('modal.headingFontWeight')};
-      color: ${th('modal.headingTextColor')};
-    `;
-    const ConfirmationMessage = styled.div`
-      margin-top: 15px;
-      margin-bottom: 15px;
-      font-family: ${th('modal.fontFamily')};
-      font-size: ${th('modal.messageFontSize')};
-      color: ${th('modal.messageTextColor')};
-    `;
-    const ConfirmationButtonSet = styled.div`
-      text-align: right;
-      margin-top: 15px;
-
-      > ${InlineButton} + ${InlineButton} {
-        margin-left: 10px;
-      }
-    `;
-    const Error = styled.div`
-      color: red;
-      font-family: ${th('modal.fontFamily')};
-      font-size: ${th('modal.messageFontSize')};
-    `;
-    const Comment = styled.div`
-      font-family: ${th('modal.fontFamily')};
-      font-size: ${th('modal.messageFontSize')};
-      border: 1px #666 solid;
-      margin: 0.5em 0;
-      border-radius: 7px;
-    `;
-    const CommentHeading = styled.div`
-      border-bottom: 1px #666 solid;
-      padding: 0.5em;
-      background: #eee;
-      border-radius: 7px 7px 0 0;
-    `;
-    const CommentTimestamp = styled.span`
-      color: #666;
-    `;
-    const CommentAuthor = styled.span`
-    `;
-    const CommentBody = styled.div`
-      padding: 0.5em;
-      white-space: pre-wrap;
-    `;
-    const Comments = styled.div`
-      max-height: 60vh;
-      overflow: auto;
-    `;
-
     return (
         <CommentSpaceHolder>
             {options.label ? <BlockLabel>{options.label}</BlockLabel> : null}
             <InlineButton bordered={true} onClick={onClick}>Access Comments</InlineButton>
             <BasicOverlay isOpen={ShowConfirmation} onRequestClose={closeModal}>
-                <ConfirmationContent>
+                <ConfirmationContent style={{maxHeight: '90vh'}}>
                     <ConfirmationHeading>Correspondence</ConfirmationHeading>
                     <Comments>
                     {comments.map((comment) => {
@@ -145,7 +87,7 @@ function FormFieldCommentSpace({data, binding, instanceId, instanceType, saveDat
                     })}
                     </Comments>
                     <ConfirmationHeading>Comment on submission</ConfirmationHeading>
-                    <TextArea style={{minHeight: '10em'}} className="comment" type="text"
+                    <TextArea style={{minHeight: '15vh'}} className="comment" type="text"
                         defaultValue={comment || ""} onBlur={handleInputChange} />
 
                     <ConfirmationButtonSet>
@@ -160,8 +102,66 @@ function FormFieldCommentSpace({data, binding, instanceId, instanceType, saveDat
 }
 
 const CommentSpaceHolder = styled.div`
-  max-height: 90%;
 `;
+
+const ConfirmationContent = styled.div`
+  min-width: 80vh;
+  max-width: 90vh;
+`;
+const ConfirmationHeading = styled.div`
+  margin-bottom: 15px;
+  font-family: ${th('modal.fontFamily')};
+  font-size: ${th('modal.headingFontSize')};
+  font-weight: ${th('modal.headingFontWeight')};
+  color: ${th('modal.headingTextColor')};
+`;
+const ConfirmationMessage = styled.div`
+  margin-top: 15px;
+  margin-bottom: 15px;
+  font-family: ${th('modal.fontFamily')};
+  font-size: ${th('modal.messageFontSize')};
+  color: ${th('modal.messageTextColor')};
+`;
+const ConfirmationButtonSet = styled.div`
+  text-align: right;
+  margin-top: 15px;
+
+  > ${InlineButton} + ${InlineButton} {
+    margin-left: 10px;
+  }
+`;
+const Error = styled.div`
+  color: red;
+  font-family: ${th('modal.fontFamily')};
+  font-size: ${th('modal.messageFontSize')};
+`;
+const Comment = styled.div`
+  font-family: ${th('modal.fontFamily')};
+  font-size: ${th('modal.messageFontSize')};
+  border: 1px #666 solid;
+  margin: 0.5em 0;
+  border-radius: 7px;
+`;
+const CommentHeading = styled.div`
+  border-bottom: 1px #666 solid;
+  padding: 0.5em;
+  background: #eee;
+  border-radius: 7px 7px 0 0;
+`;
+const CommentTimestamp = styled.span`
+  color: #666;
+`;
+const CommentAuthor = styled.span`
+`;
+const CommentBody = styled.div`
+  padding: 0.5em;
+  white-space: pre-wrap;
+`;
+const Comments = styled.div`
+  max-height: 60vh;
+  overflow: auto;
+`;
+
 
 export default withFormField(FormFieldCommentSpace, function(element) {
 
