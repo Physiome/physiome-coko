@@ -18,7 +18,9 @@ import { th } from 'ds-theme';
 
 
 function FormFieldCommentSpace({data, binding, instanceId, instanceType, saveData, refetchData, options = {}}) {
+    const commentMaxLength = 64000;
     const [comment, setComment] = useState("");
+    const [commentCharCount, setCommentCharCount] = useState(0);
     const [comments, setComments] = useState([]);
     const [commentsModified, setCommentsModified] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");
@@ -27,8 +29,10 @@ function FormFieldCommentSpace({data, binding, instanceId, instanceType, saveDat
 
     const commentOnSubmission = useCommentOnSubmission();
     const handleInputChange = (e) => {
+        if (e.target.value.length > commentMaxLength)
+            return false;
         setComment(e.target.value);
-        return false;
+        setCommentCharCount(e.target.value.length);
     };
 
     useEffect(() => {
@@ -58,6 +62,7 @@ function FormFieldCommentSpace({data, binding, instanceId, instanceType, saveDat
             setCommentsModified(true);
             setErrorMsg('');
             setComment('');
+            setCommentCharCount(0);
             return refetchData();
         }).catch(err => {
             setErrorMsg('Error when attempting to submit comment');
@@ -88,9 +93,11 @@ function FormFieldCommentSpace({data, binding, instanceId, instanceType, saveDat
                     </Comments>
                     <ConfirmationHeading>Comment on submission</ConfirmationHeading>
                     <TextArea style={{minHeight: '15vh'}} className="comment" type="text"
-                        defaultValue={comment || ""} onBlur={handleInputChange} />
-
+                        value={comment || ""} onChange={handleInputChange} />
                     <ConfirmationButtonSet>
+                        <NewCommentInfo style={{
+                            color: commentCharCount > commentMaxLength * .85 ? commentCharCount == commentMaxLength ? '#800000' : '#805000' : '#333333'
+                        }}>{commentCharCount} / {commentMaxLength}</NewCommentInfo>
                         <InlineButton bordered={true} onClick={closeModal}>{options.confirmationNegativeLabel || "Cancel"}</InlineButton>
                         <InlineButton bordered={true} default={true} onClick={affirmativeOnClick}>{options.confirmationAffirmativeLabel || "Ok"}</InlineButton>
                     </ConfirmationButtonSet>
@@ -161,6 +168,11 @@ const Comments = styled.div`
   max-height: 60vh;
   overflow: auto;
 `;
+const NewCommentInfo = styled.span`
+  font-family: ${th('modal.fontFamily')};
+  font-size: ${th('modal.messageFontSize')};
+  padding-right: 1em;
+`
 
 
 export default withFormField(FormFieldCommentSpace, function(element) {

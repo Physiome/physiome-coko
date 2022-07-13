@@ -580,6 +580,8 @@ instance Submission {
 
                 { StaticText => revisionsNote, label:"Revision Notes" }
 
+                { CommentSpace => comments, label: "Correspondence" }
+
                 { Layout, layout:"submission-editor" }
 
                 { HeroCheckbox => priceAcknowledged, heading:"Conditions of Submission",
