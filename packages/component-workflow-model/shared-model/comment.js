@@ -2,8 +2,6 @@ const { BaseModel } = require('component-model');
 const { Identity } = require('./identity');
 
 const { resolveUserForContext, userIdentityIdForContext } = require('../shared-helpers/access');
-const ModelSubmissionComment = require('./submission-comment');
-const SubmissionComment = ModelSubmissionComment.model;
 
 class Comment extends BaseModel {
 
@@ -75,6 +73,9 @@ exports.resolvers = {
     Mutation: {
 
         commentOnSubmission: async function(_, {input:{submission_id, comment_body}}, context) {
+            const ModelSubmissionComment = require('./submission-comment');
+            const SubmissionComment = ModelSubmissionComment.model;
+
             const author_id = userIdentityIdForContext(context);
             const currentDateTime = new Date().toISOString();
             const comment = new Comment({
@@ -89,6 +90,11 @@ exports.resolvers = {
                 comment_id: comment.id
             });
             await submission_comment.save();
+
+            const WorkflowModel = require('../model');
+            const { Submission } = WorkflowModel.models;
+            const submission = await Submission.find(submission_id);
+            await submission.restartWorkflow("StartEvent_CommentSubmitted");
             return comment;
         }
     }

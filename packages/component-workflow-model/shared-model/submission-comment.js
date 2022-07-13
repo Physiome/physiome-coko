@@ -1,4 +1,5 @@
 const { BaseModel } = require('component-model');
+const { Comment } = require('./comment');
 
 /*
 XXX if only the helpers genearted by the DSL would also provide server-
@@ -26,21 +27,40 @@ class SubmissionComment extends BaseModel {
     }
 
     static get relationMappings() {
-        return {}
+        return {
+            comment: {
+                relation: BaseModel.BelongsToOneRelation,
+                modelClass: Comment,
+                join: {
+                    from: `${this.tableName}.commentId`,
+                    to: `${Comment.tableName}.id`
+                }
+            }
+        };
     }
 
     // Required for relation resolution
     static get relationFieldNames() {
-        return [];
+        return ['comment'];
     }
 
     // Required for relation resolution
     static get belongsToOneRelationFields() {
-        return [];
+        return [
+            {
+                field: {
+                    field: 'comment',
+                    type: 'Comment',
+                    joinField: 'commentId',
+                    model: Comment
+                },
+                join: 'authorId'
+            }
+        ];
     }
 
     static get defaultEager () {
-        return null;
+        return 'comment';
     }
 
 }

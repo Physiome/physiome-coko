@@ -1,5 +1,6 @@
 const TaskEmailManuscriptAcceptance = require('./task-email-acceptance');
-const TaskEmailAssignCurator = require('./task-email-assign-curator.js');
+const TaskEmailAssignCurator = require('./task-email-assign-curator');
+const TaskEmailCommentSubmitted = require('./task-email-comment-submitted');
 const TaskEmailManuscriptInitialSubmission = require('./task-email-initial-submission');
 const TaskEmailManuscriptPaymentReceived = require('./task-email-payment-received');
 const TaskEmailManuscriptPublished = require('./task-email-published');
@@ -19,6 +20,7 @@ const TaskTimeoutSubmission = require('./task-time-out-submission');
 const AllTaskSetups = [
     TaskEmailManuscriptAcceptance,
     TaskEmailAssignCurator,
+    TaskEmailCommentSubmitted,
     TaskEmailManuscriptInitialSubmission,
     TaskEmailManuscriptPaymentReceived,
     TaskEmailManuscriptPublished,

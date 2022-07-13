@@ -40,7 +40,7 @@
         <bpmn:flowNodeRef>ExclusiveGateway_1h2khg5</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>ServiceTask_RevisionSubmittedEmail</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Gateway_1fqqq4a</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Activity_1j6txd5</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ServiceTask_CommentSubmittedEmail</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>ServiceTask_InitialSubmissionEmail</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>ServiceTask_AssignCuratorEmail</bpmn:flowNodeRef>
       </bpmn:lane>
@@ -56,7 +56,7 @@
         <bpmn:flowNodeRef>Task_DetailsSubmission</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>BoundaryEvent_TimeoutSubmission</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>StartEvent_1</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Event_1nlx0oe</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>StartEvent_CommentSubmitted</bpmn:flowNodeRef>
         <bpmn:childLaneSet id="LaneSet_1frl56d" />
       </bpmn:lane>
     </bpmn:laneSet>
@@ -324,12 +324,12 @@
       <bpmn:outgoing>Flow_0tfqpse</bpmn:outgoing>
       <bpmn:outgoing>Flow_0ca1buh</bpmn:outgoing>
     </bpmn:parallelGateway>
-    <bpmn:sequenceFlow id="Flow_1eq5frr" sourceRef="Event_1nlx0oe" targetRef="Activity_1j6txd5" />
-    <bpmn:startEvent id="Event_1nlx0oe" name="Comment">
+    <bpmn:sequenceFlow id="Flow_1eq5frr" sourceRef="StartEvent_CommentSubmitted" targetRef="ServiceTask_CommentSubmittedEmail" />
+    <bpmn:startEvent id="StartEvent_CommentSubmitted" name="Comment">
       <bpmn:outgoing>Flow_1eq5frr</bpmn:outgoing>
       <bpmn:messageEventDefinition id="MessageEventDefinition_04om0bk" messageRef="Message_1i0a3xt" />
     </bpmn:startEvent>
-    <bpmn:serviceTask id="Activity_1j6txd5" name="Comment Submitted" camunda:type="external" camunda:topic="comment-submitted">
+    <bpmn:serviceTask id="ServiceTask_CommentSubmittedEmail" name="Comment Submitted" camunda:type="external" camunda:topic="comment-submitted">
       <bpmn:incoming>Flow_1eq5frr</bpmn:incoming>
     </bpmn:serviceTask>
     <bpmn:serviceTask id="ServiceTask_InitialSubmissionEmail" name="Initial Submission Email" camunda:type="external" camunda:topic="initial-submission-email">
@@ -812,13 +812,13 @@
       <bpmndi:BPMNShape id="Gateway_0avoxvd_di" bpmnElement="Gateway_1fqqq4a">
         <dc:Bounds x="575" y="545" width="50" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1fyeaw8_di" bpmnElement="Event_1nlx0oe">
+      <bpmndi:BPMNShape id="Event_1fyeaw8_di" bpmnElement="StartEvent_CommentSubmitted">
         <dc:Bounds x="3002" y="242" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="2996" y="218" width="48" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0wxgb2u_di" bpmnElement="Activity_1j6txd5">
+      <bpmndi:BPMNShape id="Activity_0wxgb2u_di" bpmnElement="ServiceTask_CommentSubmittedEmail">
         <dc:Bounds x="2970" y="453" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_18rpqjo_di" bpmnElement="ServiceTask_InitialSubmissionEmail">
