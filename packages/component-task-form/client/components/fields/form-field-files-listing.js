@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import styled from 'styled-components';
+import moment from 'moment';
 
 import withFormField, { fetchFields } from './withFormField';
 import withFormFieldData from './withFormFieldData';
@@ -36,6 +37,8 @@ const SimpleFileListing = styled(({className, files, instanceId, instanceType}) 
 
                 const fileUrl = `${BaseUrl}/files/download/${instanceType.urlName}/${encodeURI(instanceId)}/${encodeURI(file.id)}/${encodeURI(file.fileName)}`;
                 const FileIcon = mimeTypeToIcon(file.fileMimeType) || FaFile;
+                const updated = file.updated ? new Date(file.updated) : "";
+                const updatedDelta = file.updated ? ` - ${moment(updated).fromNow()}` : "";
 
                 return (
                     <li key={file.id}>
@@ -43,7 +46,10 @@ const SimpleFileListing = styled(({className, files, instanceId, instanceType}) 
                             <a href={fileUrl} target="_blank" rel="noopener noreferrer">
                                 <FileIcon />
                                 <span className="file-name">{file.fileDisplayName}</span>
-                                <span className="file-size">{humanFormatByteCount(file.fileByteSize)}</span>
+                                <span className="file-meta">
+                                    <span className="file-size">{humanFormatByteCount(file.fileByteSize)}</span>
+                                    <span className="file-updated" title={updated}>{updatedDelta}</span>
+                                </span>
                             </a>
                             <a className={'force-download'} href={fileUrl} target="_blank" rel="noopener noreferrer" download={file.fileName}><FaDownload /></a>
                         </div>
@@ -89,15 +95,15 @@ const SimpleFileListing = styled(({className, files, instanceId, instanceType}) 
       margin-left: 4px;
     }
     
-    > li span.file-size {
+    > li span.file-meta {
       color: #b3b3b3;
     }
     
-    > li span.file-size:before {
+    > li span.file-meta:before {
       content: " (";
       color: #b3b3b3;
     }
-    > li span.file-size:after {
+    > li span.file-meta:after {
       content: ")";
       color: #b3b3b3;
     }
@@ -140,7 +146,7 @@ export default withFormField(FormFieldFilesListing, (element) => {
     // The top level field that we are interested in (that comes in via the 'data' data set is the binding values).
 
     const topLevel = element.binding;
-    const fetch = fetchFields(element.binding, `id, fileName, fileDisplayName, fileMimeType, fileByteSize`);
+    const fetch = fetchFields(element.binding, `id, created, updated, fileName, fileDisplayName, fileMimeType, fileByteSize`);
 
     return {topLevel, fetch};
 });
