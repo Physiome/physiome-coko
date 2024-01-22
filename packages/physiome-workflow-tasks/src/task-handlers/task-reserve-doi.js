@@ -53,7 +53,7 @@ function _reserveDoiForSubmission(submission) {
 
     const articleData = {
         title: submission.title,
-        categories: [ 2 ],
+        categories: [],
         tags: [
             "Demo Physiome Article"
         ],
