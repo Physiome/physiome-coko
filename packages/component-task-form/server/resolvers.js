@@ -62,7 +62,7 @@ async function resolveORCIDDetails(orcidId) {
 }
 
 function _safeGetValue(orcidName, key) {
-    const v = orcidName && orcidName.hasOwnProperty(key) && orcidName[key].value ? orcidName[key].value : null;
+    const v = orcidName && orcidName.hasOwnProperty(key) && orcidName[key] !== null && orcidName[key].value ? orcidName[key].value : null;
     return v && v instanceof Array ? v.join(" ") : v;
 }
 
